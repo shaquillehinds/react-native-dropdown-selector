@@ -15,6 +15,7 @@ import type { DropDownSelectorProps } from './DropDownSelector.types';
 export function DropDownSelectorController<T>(props: DropDownSelectorProps<T>) {
   const [showItems, setShowItems] = useState(false);
   const [hasPageY, setHasPageY] = useState(false);
+  const [selectorHeight, setSelectorHeight] = useState(0);
 
   const { screenHeight, relativeY } = useDeviceOrientation();
 
@@ -58,6 +59,11 @@ export function DropDownSelectorController<T>(props: DropDownSelectorProps<T>) {
     }),
     [canRenderDown, showItems]
   );
+  const scrollViewMaxHeight = useMemo(() => {
+    if (selectorHeight)
+      return selectorHeight > maxHeight ? maxHeight : selectorHeight;
+    return maxHeight;
+  }, [selectorHeight, maxHeight]);
   const scrollViewStyle = useMemo<ViewStyle>(
     () => ({
       overflow: 'hidden',
@@ -65,10 +71,12 @@ export function DropDownSelectorController<T>(props: DropDownSelectorProps<T>) {
       minHeight: relativeY(5),
       borderRadius: radiusSizes.soft,
       transform: [
-        { translateY: canRenderDown ? 0 : -maxHeight + relativeY(4) },
+        {
+          translateY: canRenderDown ? 0 : -scrollViewMaxHeight + relativeY(4),
+        },
       ],
     }),
-    [canRenderDown, maxHeight, relativeY]
+    [canRenderDown, maxHeight, relativeY, scrollViewMaxHeight]
   );
   const chevronAnimationConfig = useMemo<AnimateComponentAnimationConfig>(
     () => ({
@@ -107,6 +115,15 @@ export function DropDownSelectorController<T>(props: DropDownSelectorProps<T>) {
       props.containerProps?.onLayout?.(e);
     },
     [props.containerProps?.onLayout]
+  );
+  const handleSelectionItemsListLayout = useCallback(
+    (e: LayoutChangeEvent) => {
+      e.currentTarget.measure((_x, _y, _width, height, _pageX, _pageY) => {
+        setSelectorHeight(height);
+      });
+      props.dropdownContentContainerProps?.onLayout?.(e);
+    },
+    [props.dropdownContentContainerProps?.onLayout]
   );
   const androidShadowAnimatedStyle = useCallback(
     (opacity: Animated.Value): ViewStyle => ({
@@ -165,6 +182,7 @@ export function DropDownSelectorController<T>(props: DropDownSelectorProps<T>) {
     androidShadowAnimatedStyle,
     androidShadowAnimationConfig,
     scrollViewStyle,
+    handleSelectionItemsListLayout,
     selectionItemsListAnimatedStyle,
     selectionItemsListAnimationConfig,
     chevronAnimationConfig,

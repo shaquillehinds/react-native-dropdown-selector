@@ -86,6 +86,7 @@ export function DropDownSelector<T>(props: DropDownSelectorProps<T>) {
                         controller.canRenderDown ? [5, 0, 0, 0] : [0, 0, 5, 0]
                       }
                       {...props.dropdownContentContainerProps}
+                      onLayout={controller.handleSelectionItemsListLayout}
                     >
                       {props.items.map((item) =>
                         props.DropdownItemComponent ? (
@@ -157,7 +158,11 @@ export function DropDownSelector<T>(props: DropDownSelectorProps<T>) {
           props.dropdownButtonProps?.onPress?.(e);
         }}
       >
-        <BaseText numberOfLines={1} {...props.dropdownButtonTextProps}>
+        <BaseText
+          numberOfLines={1}
+          {...props.dropdownButtonTextProps}
+          style={{ maxWidth: '90%' }}
+        >
           {controller.label || props.placeholder || 'Select an item'}
         </BaseText>
         {props.DropdownButtonIcon ? (

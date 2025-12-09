@@ -41,9 +41,9 @@
   ],
   "scripts": {
     "example": "yarn workspace react-native-dropdown-selector-example",
-    "dev:mkdir": "mkdir -p ../../expo-dev-playground-2/node_modules/@shaquillehinds/react-native-dropdown-selector/",
-    "dev:copy": "cp -r src/* ../../expo-dev-playground-2/node_modules/@shaquillehinds/react-native-dropdown-selector/",
-    "dev:sync": "npm run dev:copy && chokidar \"src/**/*\" -c \"rsync -a src/ ../../expo-dev-playground-2/node_modules/@shaquillehinds/react-native-dropdown-selector/\"",
+    "dev:mkdir": "mkdir -p ../../expo-dev-playground-2/node_modules/@shaquillehinds/react-native-dropdown-selector/src",
+    "dev:copy": "cp -r src/* ../../expo-dev-playground-2/node_modules/@shaquillehinds/react-native-dropdown-selector/src",
+    "dev:sync": "npm run dev:copy && chokidar \"src/**/*\" -c \"rsync -a src/ ../../expo-dev-playground-2/node_modules/@shaquillehinds/react-native-dropdown-selector/src\"",
     "test": "jest",
     "tarball": "npm pack @shaquillehinds/react-native-dropdown-selector",
     "typecheck": "tsc",
