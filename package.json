@@ -57,11 +57,11 @@
     "ios",
     "android",
     "modal",
-    "sheet",
-    "bottomsheet",
-    "bottommodal",
-    "bottom-sheet",
-    "bottom-modal"
+    "dropdown",
+    "drop down",
+    "dropdown-selector",
+    "dropdown-menu",
+    "dropdown-modal"
   ],
   "repository": {
     "type": "git",
