@@ -5,6 +5,8 @@ A beautifully animated, fully customizable dropdown selector for React Native th
 [![npm version](https://img.shields.io/npm/v/@shaquillehinds/react-native-dropdown-selector.svg)](https://www.npmjs.com/package/@shaquillehinds/react-native-dropdown-selector)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
+<img src="https://raw.githubusercontent.com/shaquillehinds/react-native-dropdown-selector/master/assets/dropdownselector.gif" alt="example" height="500"/>
+
 ## ✨ Features
 
 - 🎯 **Smart Positioning** - Automatically detects available screen space and renders upward or downward
