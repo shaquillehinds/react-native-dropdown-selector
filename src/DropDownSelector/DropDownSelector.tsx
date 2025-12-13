@@ -1,22 +1,14 @@
 import {
-  AnimateComponent,
-  BaseText,
-  isAndroid,
   Layout,
-  RNPressableLayout,
-  shadowStyles,
   maxZIndex,
-  TouchableLayout,
   ComponentMounter,
   ModalForegroundWrapper,
   ModalWrapper,
-  RadioIcon,
 } from '@shaquillehinds/react-native-essentials';
-import { ChevronUp } from './svgs/ChevronUp';
-import { View } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
 import { DropDownSelectorController } from './DropDownSelector.controller';
 import type { DropDownSelectorProps } from './DropDownSelector.types';
+import { DropDownSelectorButton } from './components/DropDownSelector.button';
+import { DropDownSelectorList } from './components/DropDownSelectorList';
 
 export function DropDownSelector<T>(props: DropDownSelectorProps<T>) {
   const controller = DropDownSelectorController(props);
@@ -36,155 +28,12 @@ export function DropDownSelector<T>(props: DropDownSelectorProps<T>) {
         component={
           <ModalWrapper enableBackgroundContentPress>
             <ModalForegroundWrapper>
-              <View
-                style={
-                  !props.disableShadow
-                    ? { ...shadowStyles({ shadowOpacity: 0.15 }) }
-                    : undefined
-                }
-              >
-                {!props.disableShadow && isAndroid && (
-                  <AnimateComponent
-                    ref={controller.animateAndroidShadowRef}
-                    initialPosition={0}
-                    style={controller.androidShadowAnimatedStyle}
-                    autoStart
-                    toPosition={controller.androidShadowAnimationConfig}
-                  />
-                )}
-
-                <ScrollView
-                  ref={controller.scrollViewRef}
-                  nestedScrollEnabled
-                  showsVerticalScrollIndicator={false}
-                  overScrollMode="never"
-                  {...props.dropdownScrollViewProps}
-                  style={[
-                    controller.scrollViewStyle,
-                    props.dropdownScrollViewProps?.style,
-                  ]}
-                >
-                  <AnimateComponent
-                    ref={controller.animateComponentRef}
-                    style={controller.selectionItemsListAnimatedStyle}
-                    initialPosition={
-                      controller.canRenderDown
-                        ? -controller.relativeY(110)
-                        : controller.relativeY(110)
-                    }
-                    autoStart
-                    toPosition={
-                      props.expandAnimationConfig
-                        ? { ...props.expandAnimationConfig, toValue: 0 }
-                        : controller.selectionItemsListAnimationConfig
-                    }
-                  >
-                    <Layout
-                      borderRadius="soft"
-                      backgroundColor={'#FAFAFA'}
-                      padding={
-                        controller.canRenderDown ? [5, 0, 0, 0] : [0, 0, 5, 0]
-                      }
-                      {...props.dropdownContentContainerProps}
-                      onLayout={controller.handleSelectionItemsListLayout}
-                    >
-                      {props.items.map((item) =>
-                        props.DropdownItemComponent ? (
-                          <props.DropdownItemComponent
-                            key={item.label}
-                            item={item}
-                            isSelected={item.value === props.selectedItem}
-                          />
-                        ) : (
-                          <TouchableLayout
-                            key={item.label}
-                            flexDirection="row"
-                            center
-                            spaceBetween
-                            padding={[1, 5]}
-                            {...props.dropdownItemProps}
-                            onPress={() => {
-                              props.onSelect(item.value);
-                              controller.setShowItems(false);
-                              props.onDropdownItemPress?.(item);
-                            }}
-                          >
-                            <Layout width={'85%'}>
-                              <BaseText
-                                numberOfLines={1}
-                                {...props.dropdownItemTextProps}
-                              >
-                                {item.label}
-                              </BaseText>
-                            </Layout>
-                            {item.value === props.selectedItem ? (
-                              props.DropdownItemSelectedIcon ? (
-                                <props.DropdownItemSelectedIcon item={item} />
-                              ) : (
-                                <RadioIcon isSelected={true} />
-                              )
-                            ) : null}
-                          </TouchableLayout>
-                        )
-                      )}
-                    </Layout>
-                  </AnimateComponent>
-                </ScrollView>
-              </View>
+              <DropDownSelectorList props={props} controller={controller} />
             </ModalForegroundWrapper>
           </ModalWrapper>
         }
       />
-      <RNPressableLayout
-        disabled={props.isDisabled}
-        activeOpacity={1}
-        flexDirection="row"
-        backgroundColor={'white'}
-        borderRadius="medium"
-        padding={[1, 5]}
-        spaceBetween
-        center
-        {...props.dropdownButtonProps}
-        style={[
-          {
-            zIndex: maxZIndex + 3,
-            ...shadowStyles({ shadowOpacity: 0.1 }),
-          },
-          props.dropdownButtonProps?.style,
-        ]}
-        onPress={(e) => {
-          controller.pageYRef.current = e.nativeEvent.pageY;
-          controller.setShowItems((prev) => !prev);
-          props.dropdownButtonProps?.onPress?.(e);
-        }}
-      >
-        <BaseText
-          numberOfLines={1}
-          {...props.dropdownButtonTextProps}
-          style={[{ maxWidth: '90%' }, props.dropdownButtonTextProps?.style]}
-        >
-          {controller.label || props.placeholder || 'Select an item'}
-        </BaseText>
-        {props.DropdownButtonIcon ? (
-          <props.DropdownButtonIcon
-            isOpen={controller.showItems}
-            expandDirection={
-              props.expandDirection || controller.canRenderDown ? 'down' : 'up'
-            }
-          />
-        ) : controller.canRenderDown === null ? undefined : (
-          <Layout {...props.dropdownButtonIconContainerProps}>
-            <AnimateComponent
-              ref={controller.animateChevronRef}
-              style={controller.chevronAnimatedStyle}
-              initialPosition={controller.canRenderDown ? -1 : 1}
-              toPosition={controller.chevronAnimationConfig}
-            >
-              <ChevronUp color={'black'} {...props.dropdownButtonIconProps} />
-            </AnimateComponent>
-          </Layout>
-        )}
-      </RNPressableLayout>
+      <DropDownSelectorButton props={props} controller={controller} />
     </Layout>
   );
 }

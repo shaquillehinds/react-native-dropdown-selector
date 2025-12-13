@@ -26,6 +26,7 @@ export type DropDownSelectorProps<T> = {
   unMountDelayInMilliSeconds?: number;
   isDisabled?: boolean;
   disableShadow?: boolean;
+  dropDownItemsLayout?: 'column' | 'row';
   expandDirection?: 'up' | 'down';
   expandDistance?: number;
   expandAnimationConfig?:
@@ -47,4 +48,5 @@ export type DropDownSelectorProps<T> = {
   dropdownItemTextProps?: BaseTextProps;
   //prettier-ignore
   DropdownItemSelectedIcon?: (props: {item: DropDownItem<T>}) => React.JSX.Element;
+  DropdownSelectedItemIconColor?: string;
 };

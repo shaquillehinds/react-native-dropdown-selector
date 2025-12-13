@@ -190,3 +190,7 @@ export function DropDownSelectorController<T>(props: DropDownSelectorProps<T>) {
     unMountDelayInMilliSeconds,
   };
 }
+
+export type DropDownSelectorControllerReturnType<T> = ReturnType<
+  typeof DropDownSelectorController<T>
+>;
