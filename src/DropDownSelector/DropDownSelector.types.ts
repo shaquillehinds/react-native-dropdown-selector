@@ -12,6 +12,10 @@ export type DropDownItem<T> = {
   label: string;
   value: DropDownItemValue<T>;
 };
+export type DropdownButtonIconProps = {
+  size?: number;
+  color?: string;
+};
 export type DropDownSelectorProps<T> = {
   items: DropDownItem<T>[];
   selectedItem: T;
@@ -30,6 +34,8 @@ export type DropDownSelectorProps<T> = {
   containerProps?: LayoutProps;
   dropdownButtonProps?: RNPressableLayoutProps;
   dropdownButtonTextProps?: BaseTextProps;
+  dropdownButtonIconContainerProps?: LayoutProps;
+  dropdownButtonIconProps?: DropdownButtonIconProps;
   //prettier-ignore
   DropdownButtonIcon?: (props: { isOpen: boolean, expandDirection: 'up' | 'down' }) => React.JSX.Element;
   dropdownScrollViewProps?: ScrollViewProps;

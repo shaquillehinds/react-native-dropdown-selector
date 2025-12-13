@@ -1,7 +1,8 @@
 import { normalize } from '@shaquillehinds/react-native-essentials';
 import Svg, { Path } from 'react-native-svg';
+import type { DropdownButtonIconProps } from '../DropDownSelector.types';
 
-export function ChevronUp({ size, color }: { size?: number; color?: string }) {
+export function ChevronUp({ size, color }: DropdownButtonIconProps) {
   return (
     <Svg
       width={normalize(size || 24)}

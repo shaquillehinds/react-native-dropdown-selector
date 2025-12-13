@@ -161,7 +161,7 @@ export function DropDownSelector<T>(props: DropDownSelectorProps<T>) {
         <BaseText
           numberOfLines={1}
           {...props.dropdownButtonTextProps}
-          style={{ maxWidth: '90%' }}
+          style={[{ maxWidth: '90%' }, props.dropdownButtonTextProps?.style]}
         >
           {controller.label || props.placeholder || 'Select an item'}
         </BaseText>
@@ -173,14 +173,16 @@ export function DropDownSelector<T>(props: DropDownSelectorProps<T>) {
             }
           />
         ) : controller.canRenderDown === null ? undefined : (
-          <AnimateComponent
-            ref={controller.animateChevronRef}
-            style={controller.chevronAnimatedStyle}
-            initialPosition={controller.canRenderDown ? -1 : 1}
-            toPosition={controller.chevronAnimationConfig}
-          >
-            <ChevronUp color={'black'} />
-          </AnimateComponent>
+          <Layout {...props.dropdownButtonIconContainerProps}>
+            <AnimateComponent
+              ref={controller.animateChevronRef}
+              style={controller.chevronAnimatedStyle}
+              initialPosition={controller.canRenderDown ? -1 : 1}
+              toPosition={controller.chevronAnimationConfig}
+            >
+              <ChevronUp color={'black'} {...props.dropdownButtonIconProps} />
+            </AnimateComponent>
+          </Layout>
         )}
       </RNPressableLayout>
     </Layout>
