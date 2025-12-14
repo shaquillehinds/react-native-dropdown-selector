@@ -1,6 +1,6 @@
 {
   "name": "@shaquillehinds/react-native-dropdown-selector",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "A simple dropdown selector for react native that just works.",
   "source": "./src/index.tsx",
   "main": "./lib/commonjs/index.js",
