@@ -32,7 +32,9 @@ export function DropDownSelectorController<T>(props: DropDownSelectorProps<T>) {
     return props.unMountDelayInMilliSeconds || 300;
   }, [props.expandAnimationConfig]);
   const maxHeight = useMemo(
-    () => props.expandDistance || relativeY(30),
+    () =>
+      props.expandDistance ||
+      (props.dropDownItemsLayout === 'row' ? relativeY(20) : relativeY(30)),
     [relativeY, props.expandDistance]
   );
   const label = useMemo(
@@ -88,17 +90,36 @@ export function DropDownSelectorController<T>(props: DropDownSelectorProps<T>) {
     }),
     [canRenderDown]
   );
+  const initialPosition = useMemo(() => {
+    const offset = maxHeight + relativeY(5);
+    return canRenderDown ? -offset : offset;
+  }, [canRenderDown, maxHeight]);
   const selectionItemsListAnimationConfig =
     useMemo<AnimateComponentAnimationConfig>(
       () => ({
-        toValue: 0,
+        toValue: 1,
         type: 'spring',
-        speed: 1,
-        bounciness: 1,
+        stiffness: 200,
+        damping: 20,
         useNativeDriver: true,
       }),
       []
     );
+  const selectionItemsListAnimatedStyle = useCallback(
+    (opacity: Animated.Value): ViewStyle => ({
+      opacity,
+      transform: [
+        {
+          translateY: opacity.interpolate({
+            inputRange: [0, 1],
+            outputRange: [initialPosition, 0],
+          }),
+        },
+      ],
+    }),
+    [initialPosition]
+  );
+
   const chevronAnimatedStyle = useCallback(
     (scaleY: Animated.Value): ViewStyle => ({
       transform: [{ scaleY }],
@@ -139,18 +160,11 @@ export function DropDownSelectorController<T>(props: DropDownSelectorProps<T>) {
       borderRadius: radiusSizes.soft,
       transform: [
         {
-          translateY: canRenderDown ? 0 : -maxHeight + relativeY(4),
+          translateY: canRenderDown ? 0 : -(maxHeight / 2),
         },
       ],
     }),
-    [canRenderDown, maxHeight, relativeY]
-  );
-
-  const selectionItemsListAnimatedStyle = useCallback(
-    (translateY: Animated.Value): ViewStyle => ({
-      transform: [{ translateY }],
-    }),
-    []
+    [canRenderDown, maxHeight, relativeY, initialPosition]
   );
 
   useEffect(() => {
@@ -179,6 +193,7 @@ export function DropDownSelectorController<T>(props: DropDownSelectorProps<T>) {
     canRenderDownRef,
     maxHeight,
     handleLayout,
+    initialPosition,
     androidShadowAnimatedStyle,
     androidShadowAnimationConfig,
     scrollViewStyle,

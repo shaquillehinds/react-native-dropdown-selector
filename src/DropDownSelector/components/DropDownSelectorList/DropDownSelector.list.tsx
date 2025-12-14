@@ -37,7 +37,7 @@ export function DropDownSelectorList<T>({
 
       <ScrollView
         ref={controller.scrollViewRef}
-        scrollEnabled={props.dropDownItemsLayout === 'row'}
+        scrollEnabled={props.dropDownItemsLayout !== 'row'}
         nestedScrollEnabled
         showsVerticalScrollIndicator={false}
         overScrollMode="never"
@@ -50,15 +50,11 @@ export function DropDownSelectorList<T>({
         <AnimateComponent
           ref={controller.animateComponentRef}
           style={controller.selectionItemsListAnimatedStyle}
-          initialPosition={
-            controller.canRenderDown
-              ? -controller.relativeY(110)
-              : controller.relativeY(110)
-          }
+          initialPosition={0}
           autoStart
           toPosition={
             props.expandAnimationConfig
-              ? { ...props.expandAnimationConfig, toValue: 0 }
+              ? { ...props.expandAnimationConfig, toValue: 1 }
               : controller.selectionItemsListAnimationConfig
           }
         >
